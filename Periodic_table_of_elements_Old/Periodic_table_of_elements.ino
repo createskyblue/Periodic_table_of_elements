@@ -1,0 +1,1640 @@
+#include "U8glib.h"//引用U8G头文件
+U8GLIB_SSD1306_128X64 u8g(U8G_I2C_OPT_NONE);//设置设备名称：I2C-SSD1306-128*64(OLED)
+//如果屏幕不同请自行修改 如果第一次使用u8glib并且遇到显示不正确，请自行修改u8g配置
+/*=========================================================
+                         位图
+  =========================================================*/
+//电灯泡
+const uint8_t lightbulb[] PROGMEM = {0x00, 0x3f, 0x80, 0x00, 0x00, 0xff, 0xe0, 0x00, 0x03, 0xff, 0xf8, 0x00, 0x07, 0xff, 0xfc, 0x00, 0x0f, 0xff, 0xe6, 0x00, 0x0f, 0xff, 0xc2, 0x00, 0x1f, 0xff, 0xc1, 0x00, 0x1c, 0x3f, 0xe1, 0x00, 0x3b, 0xc1, 0xe0, 0x80, 0x3b, 0x9e, 0xf0, 0x80, 0x3b, 0x6f, 0x79, 0x80, 0x3b, 0x6f, 0x7f, 0x80, 0x3b, 0x6f, 0x7c, 0x80, 0x3d, 0x51, 0x78, 0x80, 0x3d, 0xae, 0x78, 0x80, 0x1d, 0xde, 0xbd, 0x00, 0x1b, 0xe1, 0xbf, 0x00, 0x07, 0xff, 0xbe, 0x00, 0x2f, 0x8f, 0xbe, 0x00, 0x77, 0x70, 0x7c, 0x00, 0xfa, 0xff, 0xf8, 0x00, 0xfc, 0xff, 0xe0, 0x00, 0xfe, 0x3f, 0x80, 0x00, 0x7c, 0x00, 0x00, 0x00, 0x38, 0x00, 0x00, 0x00};
+//NIKO
+const uint8_t NIKO_1[] PROGMEM = {0x3f,0xc0,0x00,0x03,0xfc,0x3f,0xc0,0x00,0x03,0xfc,0x30,0x3f,0xff,0xfc,0x0c,0x30,0x3f,0xff,0xfc,0x0c,0x30,0x0f,0xff,0xf0,0x0c,0x30,0x0f,0xff,0xf0,0x0c,0x30,0x0f,0xff,0xf0,0x0c,0x30,0x0f,0xff,0xf0,0x0c,0x30,0x0f,0xff,0xf0,0x0c,0x30,0x0f,0xff,0xf0,0x0c,0x0c,0x0f,0xff,0xf0,0x30,0x0c,0x0f,0xff,0xf0,0x30,0x0c,0x3f,0xff,0xfc,0x30,0x0c,0x3f,0xff,0xfc,0x30,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x0f,0xff,0xff,0xff,0xf0,0x0f,0xff,0xff,0xff,0xf0,0x0f,0xcc,0xff,0x33,0xf0,0x0f,0xcc,0xff,0x33,0xf0,0xcf,0x0c,0x3c,0x30,0xf3,0xcf,0x0c,0x3c,0x30,0xf3,0x3f,0x0c,0x24,0x30,0xfc,0x3f,0x0c,0x24,0x30,0xfc,0x0f,0xcc,0xc3,0x33,0xf0,0x0f,0x4c,0x81,0x32,0xf0,0x33,0x3f,0x3c,0xfc,0xcc,0x33,0xc0,0x3c,0x03,0xcc,0x03,0xf0,0x00,0x0f,0xc0,0x03,0x30,0x00,0x0c,0xc0,0x00,0x0f,0xff,0xf0,0x00,0x00,0x0f,0xff,0xf0,0x00,0x00,0x3c,0x00,0x3c,0x00,0x00,0x3c,0x00,0x3c,0x00,0x00,0x33,0xff,0xcc,0x00,0x00,0x33,0xff,0xcc,0x00,0x00,0x33,0xc3,0xcc,0x00,0x00,0x33,0xc3,0xcc,0x00,0x00,0xcf,0xff,0xf3,0x00,0x00,0xcf,0xff,0xf3,0x00,0x03,0xcf,0xc3,0xf3,0xc0,0x03,0xcf,0xc3,0xf3,0xc0,0x0f,0xcf,0xff,0xf3,0xf0,0x0f,0xcf,0xff,0xf3,0xf0,0x3f,0xcf,0xff,0xf3,0xfc,0x3f,0xcf,0xff,0xf3,0xfc,0x3f,0xcf,0xff,0xf3,0xfc,0x3f,0xcf,0xff,0xf3,0xfc,0xcc,0xc3,0xc3,0xc3,0x33,0xcc,0xc3,0xc3,0xc3,0x33,0x00,0x03,0xc3,0xc0,0x00,0x00,0x03,0xc3,0xc0,0x00};
+const uint8_t NIKO_2[] PROGMEM = {0x3f, 0xc0, 0x00, 0x03, 0xfc, 0x3f, 0xc0, 0x00, 0x03, 0xfc, 0x30, 0x3f, 0xff, 0xfc, 0x0c, 0x30, 0x3f, 0xff, 0xfc, 0x0c, 0x30, 0x0f, 0xff, 0xf0, 0x0c, 0x30, 0x0f, 0xff, 0xf0, 0x0c, 0x30, 0x0f, 0xff, 0xf0, 0x0c, 0x30, 0x0f, 0xff, 0xf0, 0x0c, 0x30, 0x0f, 0xff, 0xf0, 0x0c, 0x30, 0x0f, 0xff, 0xf0, 0x0c, 0x0c, 0x0f, 0xff, 0xf0, 0x30, 0x0c, 0x0f, 0xff, 0xf0, 0x30, 0x0c, 0x3f, 0xff, 0xfc, 0x30, 0x0c, 0x3f, 0xff, 0xfc, 0x30, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0f, 0xff, 0xff, 0xff, 0xf0, 0x0f, 0xff, 0xff, 0xff, 0xf0, 0x0f, 0xcc, 0xff, 0x33, 0xf0, 0x0f, 0xcc, 0xff, 0x33, 0xf0, 0xcf, 0x0c, 0x3c, 0x30, 0xf3, 0xcf, 0x0c, 0x3c, 0x30, 0xf3, 0x3f, 0x0c, 0x24, 0x30, 0xfc, 0x3f, 0x0c, 0x24, 0x30, 0xfc, 0x0f, 0xcc, 0xc3, 0x33, 0xf0, 0x0f, 0x4c, 0x81, 0x32, 0xf0, 0x33, 0x3f, 0x3c, 0xfc, 0xcc, 0x33, 0xc0, 0x3c, 0x03, 0xcc, 0x03, 0xf0, 0x00, 0x0f, 0xc0, 0x03, 0x30, 0x00, 0x0c, 0xc0, 0x00, 0x0f, 0xff, 0xf0, 0x00, 0x00, 0x0f, 0xff, 0xf0, 0x00, 0x00, 0x3c, 0x00, 0x3c, 0x00, 0x00, 0x3c, 0x00, 0x3c, 0x00, 0x00, 0x33, 0xff, 0xfc, 0x00, 0x00, 0x33, 0xff, 0xfc, 0x00, 0x00, 0x33, 0xc0, 0x3c, 0x00, 0x00, 0x33, 0xc0, 0x3c, 0x00, 0x00, 0xcf, 0x06, 0x3f, 0x00, 0x00, 0xcf, 0x01, 0x3f, 0x00, 0x03, 0xcc, 0xfc, 0x33, 0xc0, 0x03, 0xcc, 0xfc, 0x33, 0xc0, 0x0f, 0xcf, 0x0c, 0xc3, 0xf0, 0x0f, 0xcf, 0x0c, 0xc3, 0xf0, 0x3f, 0xcc, 0xfc, 0x03, 0xfc, 0x3f, 0xcc, 0xfc, 0x03, 0xfc, 0x3f, 0xcf, 0x00, 0x0f, 0xfc, 0x3f, 0xcf, 0x00, 0x0f, 0xfc, 0xcc, 0xcf, 0xc0, 0x3b, 0x33, 0xcc, 0xcf, 0xc0, 0x3b, 0x33, 0x00, 0x03, 0xff, 0xc0, 0x00, 0x00, 0x03, 0xc3, 0xc0, 0x00, 0x00, 0x03, 0xc3, 0xc0, 0x00, 0x00, 0x03, 0xc3, 0xc0, 0x00};
+//HWT
+const uint8_t HWT[] PROGMEM = {0x18, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x66, 0x06, 0x33, 0x3c, 0x12, 0x8b, 0xe0, 0x89, 0x44, 0x42, 0x09, 0x49, 0x24, 0x12, 0x88, 0x80, 0x89, 0x44, 0x99, 0x02, 0x49, 0x3c, 0x1e, 0x88, 0x8c, 0x8f, 0x44, 0x99, 0x04, 0x49, 0x24, 0x12, 0xa8, 0x8c, 0x89, 0x54, 0x42, 0x08, 0x49, 0x24, 0x12, 0x50, 0x80, 0x89, 0x28, 0x66, 0x0f, 0x33, 0xbc, 0x12, 0x50, 0x80, 0xe9, 0x28, 0x18, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+//title
+const uint8_t title[] PROGMEM = {0x00, 0x00, 0x00, 0x08, 0x00, 0x3f, 0xff, 0x02, 0x30, 0x00, 0x00, 0x80, 0x00, 0x3f, 0xfc, 0x03, 0xff, 0xf0, 0x3f, 0xff, 0x02, 0x33, 0xf8, 0x00, 0x80, 0x00, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x30, 0x83, 0x0f, 0xfb, 0x18, 0x7f, 0xff, 0x00, 0x00, 0x00, 0x00, 0x1c, 0x00, 0x30, 0x83, 0x07, 0x33, 0x18, 0x00, 0x80, 0x00, 0x00, 0x00, 0x03, 0xff, 0xe0, 0x37, 0xf3, 0x02, 0x33, 0x18, 0x3f, 0xfe, 0x00, 0x00, 0x00, 0x00, 0x08, 0x00, 0x30, 0x83, 0x03, 0xf3, 0xf8, 0x3f, 0xfe, 0x00, 0x7f, 0xff, 0x0f, 0xff, 0xf8, 0x21, 0xc3, 0x02, 0x33, 0x18, 0x00, 0x80, 0x00, 0x06, 0x20, 0x00, 0x31, 0x80, 0x2f, 0xfb, 0x03, 0x33, 0x18, 0xff, 0xff, 0x80, 0x06, 0x20, 0x01, 0xff, 0x80, 0x20, 0x03, 0x03, 0xf3, 0x18, 0x03, 0x40, 0x00, 0x06, 0x20, 0x01, 0xfe, 0x40, 0x27, 0xf3, 0x02, 0x33, 0xf8, 0x06, 0xc2, 0x00, 0x06, 0x20, 0x00, 0x38, 0x60, 0x26, 0x33, 0x0f, 0xfb, 0x18, 0x0e, 0x46, 0x00, 0x04, 0x20, 0x03, 0xff, 0xf0, 0x66, 0x33, 0x0f, 0xfb, 0x18, 0x3e, 0x7c, 0x00, 0x0c, 0x20, 0x03, 0x0c, 0x00, 0x66, 0x33, 0x02, 0x23, 0x18, 0x76, 0x38, 0x00, 0x18, 0x21, 0x80, 0xcc, 0xc0, 0x67, 0xf3, 0x06, 0x36, 0x18, 0x46, 0xd8, 0x00, 0x38, 0x31, 0x87, 0x8c, 0x70, 0x40, 0x03, 0x0c, 0x1e, 0x18, 0x07, 0x8f, 0x80, 0xf0, 0x3f, 0x06, 0x3c, 0x30, 0xc0, 0x1f, 0x08, 0x0c, 0x38, 0x07, 0x03, 0x80, 0x40, 0x00, 0x00, 0x10, 0x00, 0x40, 0x0e, 0x00, 0x00, 0x20, 0x04, 0x00, 0x00};
+const uint8_t L[] PROGMEM = {
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x01, 0xC0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x01, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x03, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x03, 0x70, 0x3F, 0x87, 0xF0, 0xC1, 0x99, 0x83,
+  0x07, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x07, 0x30, 0x3F, 0xC7, 0xF8, 0xC1, 0x99, 0xC3,
+  0x1F, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x06, 0x38, 0x30, 0xC6, 0x1C, 0xC1, 0x99, 0xE3,
+  0x18, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x0E, 0x18, 0x30, 0xC6, 0x0C, 0xC1, 0x99, 0xF3,
+  0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x0F, 0xFC, 0x3F, 0xC6, 0x0C, 0xC1, 0x99, 0xBB,
+  0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x1F, 0xFC, 0x3F, 0x06, 0x0C, 0xC1, 0x99, 0x9F,
+  0x30, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x18, 0x0E, 0x31, 0x86, 0x1C, 0xE3, 0x99, 0x8F,
+  0x38, 0x70, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x38, 0x07, 0x30, 0xC7, 0xF8, 0x7F, 0x19, 0x87,
+  0x1F, 0xE0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x78, 0x07, 0xB0, 0xE7, 0xE0, 0x3E, 0x19, 0x87,
+  0x07, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x82, 0x00, 0x10,
+  0x00, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x04, 0x92, 0x00, 0x08,
+  0x00, 0x00, 0x20, 0x40, 0x80, 0x3E, 0x78, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x02, 0xA4, 0x01, 0xFF,
+  0xE0, 0x7F, 0xC0, 0x40, 0x80, 0x24, 0x88, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x02, 0xC4, 0x02, 0x00,
+  0x40, 0x00, 0x00, 0x08, 0x88, 0x24, 0x88, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x0F, 0xF7, 0xE2, 0x00,
+  0x80, 0x00, 0x00, 0x1F, 0xF8, 0x3C, 0x78, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x01, 0xCC, 0x81, 0xFF,
+  0x80, 0x00, 0x19, 0xA8, 0x90, 0x26, 0xA0, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x02, 0xB4, 0x80, 0x02,
+  0x03, 0xFF, 0xE0, 0xA8, 0x80, 0x03, 0x14, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x04, 0x94, 0x80, 0x04,
+  0x00, 0x24, 0x00, 0x27, 0xF8, 0x7C, 0xE8, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x08, 0x84, 0x80, 0x0C,
+  0x00, 0x24, 0x80, 0x4A, 0x10, 0x0C, 0x40, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x01, 0x34, 0x87, 0xFF,
+  0xF0, 0x44, 0x40, 0x49, 0x20, 0x10, 0x30, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x07, 0xE3, 0x00, 0x08,
+  0x00, 0x44, 0x20, 0x49, 0x20, 0x7E, 0xFE, 0x00,
+  0x00, 0x1E, 0x00, 0x00, 0x02, 0x43, 0x00, 0x08,
+  0x00, 0x84, 0x10, 0x88, 0xC0, 0x22, 0x88, 0x00,
+  0x00, 0x33, 0x00, 0x00, 0x01, 0xC3, 0x00, 0x08,
+  0x01, 0x04, 0x10, 0x90, 0xC0, 0x22, 0x88, 0x00,
+  0x00, 0x61, 0x80, 0x00, 0x01, 0xB4, 0x80, 0x08,
+  0x02, 0x04, 0x00, 0x91, 0x30, 0x22, 0x88, 0x00,
+  0x00, 0xC0, 0x80, 0x00, 0x02, 0x08, 0x60, 0x38,
+  0x00, 0x1C, 0x00, 0xA6, 0x1C, 0x3E, 0xF8, 0x00,
+  0x00, 0x80, 0xC0, 0x00, 0x04, 0x30, 0x00, 0x10,
+  0x00, 0x08, 0x00, 0x58, 0x00, 0x00, 0x00, 0x00,
+  0x01, 0x80, 0x40, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x01, 0x80, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x01, 0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x03, 0x00, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x02, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x02, 0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x03,
+  0x00, 0x60, 0x00, 0x20, 0x00, 0x18, 0x00, 0x00,
+  0x06, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x06,
+  0x00, 0x30, 0x00, 0x60, 0x00, 0x18, 0x00, 0x00,
+  0x06, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x06,
+  0x00, 0x30, 0x00, 0x60, 0x00, 0x18, 0x00, 0x00,
+  0x04, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x06,
+  0x1E, 0x31, 0xBC, 0xFE, 0x38, 0xDB, 0xC1, 0xD8,
+  0x04, 0x00, 0x18, 0x00, 0x00, 0x00, 0x00, 0x0C,
+  0x3F, 0x19, 0xFE, 0xFE, 0x38, 0xDF, 0xE3, 0xF8,
+  0x04, 0x00, 0x18, 0x00, 0x10, 0x00, 0x00, 0x0C,
+  0x73, 0x19, 0xC6, 0x63, 0x39, 0x9C, 0x67, 0x38,
+  0x0C, 0x00, 0x18, 0x00, 0x18, 0x00, 0x00, 0x0C,
+  0x60, 0x19, 0x86, 0x63, 0x6D, 0x98, 0x66, 0x18,
+  0x7F, 0xFF, 0xFF, 0xFF, 0xFE, 0x00, 0x00, 0x0C,
+  0x60, 0x19, 0x86, 0x63, 0x6D, 0x98, 0x66, 0x18,
+  0x0C, 0x00, 0x08, 0x00, 0x10, 0x00, 0x00, 0x0C,
+  0x60, 0x19, 0x86, 0x63, 0x6D, 0x98, 0x66, 0x18,
+  0x00, 0x00, 0x08, 0x00, 0x30, 0x00, 0x00, 0x0C,
+  0x73, 0x19, 0x86, 0x61, 0xC7, 0x18, 0x67, 0x38,
+  0x00, 0x00, 0x0C, 0x00, 0x30, 0x00, 0x00, 0x0C,
+  0x3F, 0x19, 0x86, 0x79, 0xC7, 0x18, 0x63, 0xF8,
+  0x00, 0x00, 0x0C, 0x00, 0x30, 0x00, 0x00, 0x06,
+  0x1E, 0x31, 0x86, 0x39, 0xC7, 0x18, 0x61, 0xD8,
+  0x00, 0x00, 0x04, 0x00, 0x20, 0x00, 0x00, 0x06,
+  0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x18,
+  0x00, 0x00, 0x04, 0x00, 0x20, 0x00, 0x00, 0x06,
+  0x00, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x18,
+  0x00, 0x00, 0x06, 0x00, 0x60, 0x00, 0x00, 0x03,
+  0x00, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00, 0x18,
+  0x00, 0x00, 0x06, 0x00, 0x60, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x02, 0x00, 0x40, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x03, 0x00, 0xC0, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x01, 0xC7, 0x04, 0x70, 0x38, 0xE0,
+  0x00, 0x00, 0x03, 0x00, 0x80, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x02, 0x28, 0x8C, 0x88, 0x45, 0x10,
+  0x00, 0x00, 0x01, 0x01, 0x80, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x28, 0x94, 0x08, 0x45, 0x10,
+  0x00, 0x00, 0x01, 0x81, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x48, 0x84, 0x30, 0x44, 0xE0,
+  0x00, 0x00, 0x00, 0xC3, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x88, 0x84, 0x08, 0x45, 0x10,
+  0x00, 0x00, 0x00, 0x66, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x01, 0x08, 0x84, 0x88, 0x45, 0x10,
+  0x00, 0x00, 0x00, 0x3C, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x03, 0xE7, 0x04, 0x70, 0x38, 0xE0,
+  0x00, 0x00, 0x00, 0x18, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+//放射性
+const uint8_t radiation[] PROGMEM = {0x00, 0x00, 0x0f, 0xf0, 0x1f, 0xe8, 0x27, 0xe4, 0x43, 0xc2, 0x43, 0x82, 0x03, 0x80, 0x02, 0x40, 0x7e, 0x7e, 0x7f, 0xfe, 0x7c, 0x7e, 0x7c, 0x3e, 0x38, 0x1c, 0x18, 0x18, 0x0c, 0x30, 0x00, 0x00};
+//金属
+const uint8_t Bmrtal[] PROGMEM = {0x00, 0x00, 0x03, 0xfe, 0x04, 0x06, 0x08, 0x0a, 0x10, 0x12, 0x3f, 0xe2, 0x20, 0x22, 0x20, 0x22, 0x20, 0x22, 0x60, 0x22, 0xa0, 0x24, 0x60, 0x29, 0xa0, 0x3a, 0x7f, 0xf5, 0xaa, 0xaa, 0x55, 0x54};
+const uint8_t Element[] PROGMEM = {0x7f, 0xc0, 0x10, 0x01, 0x00, 0x1c, 0x80, 0x00, 0x00, 0x10, 0x03, 0xfc, 0x38, 0x80, 0x00, 0x01, 0xff, 0x02, 0x08, 0x09, 0x98, 0x00, 0x00, 0x10, 0x0d, 0x90, 0x3f, 0x18, 0xff, 0xc3, 0xff, 0x80, 0xe0, 0x18, 0x40, 0x1a, 0x00, 0xfe, 0x00, 0xc0, 0x18, 0x40, 0x12, 0x00, 0x33, 0x03, 0xfc, 0x1d, 0x50, 0x12, 0x01, 0xff, 0x8f, 0x04, 0x39, 0x48, 0x32, 0x00, 0x10, 0x01, 0x04, 0x2b, 0x48, 0x63, 0x21, 0x93, 0x01, 0xfc, 0x0a, 0x40, 0xc1, 0xe2, 0x30, 0x01, 0x04, 0x08, 0xc0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+//元素名称
+const uint8_t Relative[] PROGMEM = {0x7f, 0xe1, 0xff, 0x04, 0x40, 0x0b, 0xf0, 0x42, 0x00, 0x06, 0x06, 0x4c, 0x10, 0x30, 0x5f, 0xc0, 0x08, 0x02, 0x58, 0x34, 0x20, 0x50, 0x40, 0x10, 0x00, 0x40, 0x0c, 0xe0, 0x5f, 0xc0, 0x10, 0x0f, 0xfe, 0x1b, 0x18, 0x50, 0x43, 0xff, 0x80, 0x40, 0x3a, 0x00, 0x5f, 0xc0, 0x10, 0x00, 0x40, 0x2b, 0xf8, 0x42, 0x00, 0x10, 0x0f, 0xfe, 0x08, 0x40, 0x4a, 0xc0, 0x10, 0x00, 0x40, 0x08, 0x40, 0x92, 0x60, 0x10, 0x00, 0x40, 0x08, 0x40, 0xa6, 0x00, 0x70, 0x00, 0x40, 0x1f, 0xf8};
+//相对质量
+const uint8_t RM[] PROGMEM = {0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x13, 0xf0, 0x00, 0x81, 0xfe, 0x0f, 0xf8, 0x12, 0x11, 0xf0, 0x83, 0xb0, 0x0f, 0xf8, 0x7e, 0x10, 0x3f, 0xc3, 0xff, 0x0f, 0xf8, 0x33, 0xf0, 0x37, 0xc3, 0xfe, 0x18, 0x0c, 0x33, 0x11, 0xa0, 0x82, 0x30, 0x1f, 0xfc, 0x3e, 0x10, 0xec, 0x82, 0xfe, 0x0f, 0xf8, 0x77, 0xf0, 0x64, 0x82, 0x92, 0x0f, 0xf8, 0x52, 0x10, 0x64, 0x82, 0x92, 0x0f, 0xf8, 0x12, 0x10, 0xb0, 0x86, 0x3c, 0x00, 0x80, 0x13, 0xf1, 0x90, 0x86, 0x6e, 0x07, 0xf0, 0x13, 0x11, 0x03, 0x85, 0xc3, 0x1f, 0xfc};
+//价态
+const uint8_t VA[] PROGMEM = {0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0xc0, 0x08, 0x01, 0xfc, 0x04, 0x38, 0x11, 0x80, 0x18, 0x00, 0x1f, 0xc1, 0xff, 0xc1, 0xfc, 0x09, 0xa0, 0x11, 0x81, 0xff, 0xc0, 0x10, 0x40, 0x7f, 0x01, 0x04, 0x09, 0x20, 0x22, 0x40, 0x14, 0x00, 0x00, 0x00, 0x41, 0x00, 0x00, 0x19, 0x20, 0x26, 0x30, 0x22, 0x00, 0x7f, 0xf0, 0x7f, 0x07, 0xff, 0x19, 0xfc, 0x6c, 0x10, 0x73, 0x00, 0x24, 0x00, 0x00, 0x02, 0x40, 0x09, 0x20, 0x22, 0x41, 0x88, 0xc0, 0x3f, 0xe1, 0x00, 0x43, 0xfe, 0x09, 0x20, 0x22, 0x41, 0x00, 0x00, 0x3d, 0x41, 0x3e, 0x43, 0xd4, 0x09, 0x30, 0x22, 0x40, 0xac, 0x80, 0x26, 0xc1, 0x22, 0x42, 0x6c, 0x09, 0xd0, 0x22, 0x41, 0xa0, 0xc0, 0x7c, 0xc1, 0x3e, 0x47, 0xcc, 0x09, 0xdc, 0x24, 0x41, 0x21, 0x40, 0x05, 0x31, 0x00, 0xc0, 0x53, 0x08, 0x4c, 0x2c, 0x40, 0x3f, 0x00};
+const uint8_t BootA[] PROGMEM = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xca, 0x80, 0x00, 0x03, 0xca, 0x80, 0x00, 0x03, 0xcb, 0xc0, 0x00, 0x03, 0xc8, 0x80, 0x00, 0x03, 0xc8, 0x80, 0x00, 0x03, 0xc8, 0x80, 0x00, 0x03, 0xc0, 0x07, 0xd8, 0x03, 0xc0, 0x1c, 0xd8, 0x03, 0xc0, 0x1c, 0x00, 0x03, 0xc0, 0x1c, 0x18, 0x03, 0xc0, 0x0e, 0x18, 0x03, 0xc0, 0x07, 0x98, 0x03, 0xc0, 0x01, 0xd8, 0x03, 0xc0, 0x00, 0xd8, 0x03, 0xc0, 0x1c, 0xd8, 0x03, 0xc0, 0x0f, 0x98, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xc1, 0x9c, 0x77, 0x03, 0xc2, 0x44, 0x55, 0x03, 0xc0, 0x9c, 0x57, 0x03, 0xc1, 0x04, 0x51, 0x03, 0xc3, 0xdd, 0x77, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+const uint8_t BootB[] PROGMEM = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x38, 0x00, 0x03, 0xc0, 0x44, 0x00, 0x03, 0xc0, 0x82, 0x00, 0x03, 0xc0, 0x82, 0x00, 0x03, 0xc1, 0x01, 0x00, 0x03, 0xc1, 0x01, 0x00, 0x03, 0xc1, 0x01, 0x00, 0x03, 0xcf, 0xff, 0xff, 0xe3, 0xc0, 0x01, 0x01, 0x03, 0xc0, 0x01, 0x01, 0x03, 0xc0, 0x01, 0x01, 0x03, 0xc0, 0x00, 0x82, 0x03, 0xc0, 0x00, 0x82, 0x03, 0xc0, 0x00, 0x44, 0x03, 0xc0, 0x00, 0x38, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x80, 0x03, 0xcf, 0xcb, 0xeb, 0x43, 0xc0, 0x00, 0xaf, 0xc3, 0xdf, 0xef, 0xdf, 0xc3, 0xc1, 0x03, 0x47, 0x83, 0xc9, 0x4d, 0xdc, 0xe3, 0xd9, 0x3d, 0x83, 0x03, 0xc7, 0x1f, 0x6f, 0xc3, 0xc0, 0x00, 0x00, 0x03, 0xc0, 0x00, 0x00, 0x03, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+
+const uint8_t rook_bitmap5[] PROGMEM = {
+  0x0, 0xFE, 0xFF, 0xFF, 0xFF, 0xFE, 0x0, 0x0
+};//电池满
+const uint8_t rook_bitmap4[] PROGMEM = {
+  0x0, 0xFE, 0xFB, 0xF9, 0xFB, 0xFE, 0x0, 0x0
+};
+const uint8_t rook_bitmap3[] PROGMEM = {
+  0x0, 0xFE, 0xF3, 0xF1, 0xF3, 0xFE, 0x0, 0x0
+};
+const uint8_t rook_bitmap2[] PROGMEM = {
+  0x0, 0xFE, 0xE3, 0xE1, 0xE3, 0xFE, 0x0, 0x0
+};
+const uint8_t rook_bitmap1[] PROGMEM = {
+  0x0, 0xFE, 0xC3, 0xC1, 0xC3, 0xFE, 0x0, 0x0
+};
+const uint8_t rook_bitmap0[] PROGMEM = {
+  0x0, 0xFE, 0x83, 0x81, 0x83, 0xFE, 0x0, 0x0
+}; //电池空
+/*=========================================================
+                      自定义按键
+  =========================================================*/
+#define UP 11//定义方向键上为Arduino上的11号引脚
+#define DOWN 10//定义方向键上为Arduino上的10号引脚
+#define LEFT 9//定义方向键上为Arduino上的9号引脚
+#define RIGHT 8//定义方向键上为Arduino上的8号引脚
+#define A 7//定义方向键上为Arduino上的7号引脚
+#define B 6//定义方向键上为Arduino上的6号引脚
+/*=========================================================
+                      音乐
+  =========================================================*/
+#define BzPin 5
+int p = 1125;
+int l = 0;
+#define L1 131
+#define L2 147
+#define L3 165
+#define L4 175
+#define L5 196
+#define L6 220
+#define L7 247
+#define M1 262
+#define M2 294
+#define M3 330
+#define M4 349
+#define M5 392
+#define M6 440
+#define M7 497
+#define H1 523
+#define H2 587
+#define H3 659
+#define H4 698
+#define H5 784
+#define H6 880
+#define H7 988
+/*=========================================================
+                         变量
+  =========================================================*/
+byte BootLoadChoose = 0; //0为启动元素周期表  1为启动示波器
+//示波器
+int Input = A0;  //声明输入引脚
+byte NIKO = 0; //发出困惑的猫叫声
+int Fx, Fy; //声明坐标
+int Fi, i1, i2, V_min, V_max, V_mid, t, t0, t1, sta, Key = 1, hold = 0;
+long Freq;
+float Vpp;
+int FY[96]; //声明信号值储存数组
+int Buffer[192];
+//元素周期表
+bool flash = 0;  //电池闪烁警告位置
+int TEIRN = 0; //彩蛋计数
+boolean metal;
+boolean refresh = true;
+byte EX = 0;
+byte EY = 0; //当前显示位置
+int Nx, Ny;
+byte ZQ; //周期
+const  byte AM[10][18] PROGMEM = {  //排列方式
+  {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+  {3, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 7, 8, 9, 10},
+  {11, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 14, 15, 16, 17, 18},
+  {19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36},
+  {37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54},
+  {55, 56, 0, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86},
+  {87, 88, 0, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118},
+  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+  {0, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 0, 0},
+  {0, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 0, 0}
+};
+const byte non[24] PROGMEM = {  //非金属
+  1, 2,
+  5, 6, 7, 8, 9, 10,
+  14, 15, 16, 17, 18,
+  33, 34, 33, 36,
+  52, 53, 54,
+  85, 86,
+  117, 118,
+};
+const byte Radius[107] PROGMEM = {  //半径
+  78, 100, 154, 113, 95, 86, 80, 66, 64, 100,
+  191, 160, 143, 134, 130, 104, 162, 100, 234, 197, 164,
+  145, 135, 127, 132, 127, 126, 124, 128, 139, 140, 140,
+  150, 160, 111, 114, 250, 215, 180, 160, 148, 140, 135,
+  132, 134, 137, 144, 157, 166, 158, 160, 170, 195, 133,
+  271, 224, 184, 182, 183, 182, 163, 180, 204, 180, 178,
+  177, 177, 176, 175, 194, 173, 159, 148, 141, 146, 134,
+  136, 139, 144, 162, 173, 175, 170, 170, 153, 153, 153,
+  153, 188, 180, 160, 155, 158, 164, 173, 142, 142, 142,
+  142, 142, 142, 142, 142, 142, 142, 142, 142,
+};
+const byte mass[] PROGMEM = {  //相对质量
+  10, 8, 40, 3, 69, 41, 90, 12, 10, 81, 12, 1, 14, 1,
+  16, 0, 19, 00, 20, 18, 22, 99, 24, 31, 26, 98, 23, 9,
+  30, 97, 32, 6, 35, 45, 39, 95, 39, 10, 40, 8, 44, 96,
+  47, 87, 50, 94, 52, 0, 54, 94, 55, 85, 58, 93, 58, 69,
+  63, 55, 65, 38, 69, 72, 72, 63, 74, 92, 78, 96, 79, 90,
+  83, 80, 85, 47, 87, 62, 88, 91, 91, 22, 92, 91, 95, 96,
+  98, 0, 10, 11, 10, 29, 10, 64, 10, 79, 11, 24, 11, 48,
+  11, 87, 12, 18, 12, 76, 12, 69, 13, 13, 13, 29, 13, 73,
+  13, 89, 14, 1, 14, 9, 14, 42, 14, 50, 15, 4, 15, 20,
+  15, 73, 15, 89, 16, 25, 16, 49, 16, 73, 16, 89, 17, 31,
+  17, 50, 17, 85, 18, 9, 18, 38, 18, 62, 19, 2, 19, 22,
+  19, 51, 19, 70, 20, 6, 20, 44, 20, 72, 20, 90, 20, 90,
+  21, 0, 22, 20, 22, 30, 22, 60, 22, 70, 23, 20, 23, 10,
+  23, 80, 23, 70, 24, 40, 24, 30, 24, 70, 24, 70, 25, 10,
+  25, 20, 25, 70, 25, 80, 25, 90, 26, 20, 26, 50, 26, 80,
+  27, 10, 27, 00, 27, 70, 27, 60, 28, 10, 28, 00, 28, 50,
+  28, 40, 28, 90, 28, 80, 29, 30, 29, 40, 29, 40, 30,
+};
+const  byte AC[118][7] PROGMEM = {  //结构
+  {1, 0, 0, 0, 0, 0, 0},
+  {2, 0, 0, 0, 0, 0, 0},
+  {2, 1, 0, 0, 0, 0, 0},
+  {2, 2, 0, 0, 0, 0, 0},
+  {2, 3, 0, 0, 0, 0, 0},
+  {2, 4, 0, 0, 0, 0, 0},
+  {2, 5, 0, 0, 0, 0, 0},
+  {2, 6, 0, 0, 0, 0, 0},
+  {2, 7, 0, 0, 0, 0, 0},
+  {2, 8, 0, 0, 0, 0, 0},
+  {2, 8, 1, 0, 0, 0, 0},
+  {2, 8, 2, 0, 0, 0, 0},
+  {2, 8, 3, 0, 0, 0, 0},
+  {2, 8, 4, 0, 0, 0, 0},
+  {2, 8, 5, 0, 0, 0, 0},
+  {2, 8, 6, 0, 0, 0, 0},
+  {2, 8, 7, 0, 0, 0, 0},
+  {2, 8, 8, 0, 0, 0, 0}, //18
+  {2 , 8 , 8 , 1, 0, 0, 0},
+  {2 , 8 , 8 , 2, 0, 0, 0},
+  {2 , 8 , 9 , 2, 0, 0, 0},
+  {2 , 8 , 10 , 2, 0, 0, 0},
+  {2 , 8 , 11 , 2, 0, 0, 0},
+  {2 , 8 , 13 , 1, 0, 0, 0},
+  {2 , 8 , 13 , 2, 0, 0, 0},
+  {2 , 8 , 14 , 2, 0, 0, 0},
+  {2 , 8 , 15 , 2, 0, 0, 0},
+  {2 , 8 , 16 , 2, 0, 0, 0},
+  {2 , 8 , 18 , 1, 0, 0, 0},
+  {2 , 8 , 18 , 2, 0, 0, 0},
+  {2 , 8 , 18 , 3, 0, 0, 0},
+  {2 , 8 , 18 , 4, 0, 0, 0},
+  {2 , 8 , 18 , 5, 0, 0, 0},
+  {2 , 8 , 18 , 6, 0, 0, 0},
+  {2 , 8 , 18 , 7, 0, 0, 0},
+  {2 , 8 , 18 , 8, 0, 0, 0,},
+  {2 , 8 , 18 , 8 , 1, 0, 0},
+  {2 , 8 , 18 , 8 , 2, 0, 0},
+  {2 , 8 , 18 , 9 , 2, 0, 0},
+  {2 , 8 , 18 , 10, 2, 0, 0},
+  {2 , 8 , 18 , 12, 1, 0, 0},
+  {2 , 8 , 18 , 13, 1, 0, 0},
+  {2 , 8 , 18 , 13, 2, 0, 0},
+  {2 , 8 , 18 , 15, 1, 0, 0},
+  {2 , 8 , 18 , 16, 1, 0, 0},
+  {2 , 8 , 18 , 18 , 0, 0, 0},
+  {2 , 8 , 18 , 18 , 1 , 0, 0},
+  {2 , 8 , 18 , 18 , 2 , 0, 0},
+  {2 , 8 , 18 , 18 , 3 , 0, 0},
+  {2 , 8 , 18 , 18 , 4 , 0, 0},
+  {2 , 8 , 18 , 18 , 5 , 0, 0},
+  {2 , 8 , 18 , 18 , 6 , 0, 0},
+  {2 , 8 , 18 , 18 , 7 , 0, 0},
+  {2 , 8 , 18 , 18 , 8 , 0, 0},
+  {2 , 8 , 18 , 18 , 8 , 1, 0},
+  {2 , 8 , 18 , 18 , 8 , 2, 0},
+  {2 , 8 , 18 , 18 , 9 , 2, 0},
+  {2 , 8 , 18 , 19 , 9 , 2, 0},
+  {2 , 8 , 18 , 21 , 8 , 2, 0},
+  {2 , 8 , 18 , 22 , 8 , 2, 0},
+  {2 , 8 , 18 , 23 , 8 , 2, 0},
+  {2 , 8 , 18 , 24 , 8 , 2, 0},
+  {2 , 8 , 18 , 25 , 8 , 2, 0},
+  {2 , 8 , 18 , 25 , 9 , 2, 0},
+  {2 , 8 , 18 , 27 , 8 , 2, 0},
+  {2 , 8 , 18 , 28 , 8 , 2, 0},
+  {2 , 8 , 18 , 29 , 8 , 2, 0},
+  {2 , 8 , 18 , 30 , 8 , 2, 0},
+  {2 , 8 , 18 , 31 , 8 , 2, 0},
+  {2 , 8 , 18 , 32 , 8 , 2, 0},
+  {2 , 8 , 18 , 32 , 9 , 2, 0},
+  {2 , 8 , 18 , 32 , 10, 2, 0}, //72
+  {2 , 8 , 18 , 32 , 11, 2 , 0},
+  {2 , 8 , 18 , 32 , 12, 2 , 0},
+  {2 , 8 , 18 , 32 , 13, 2 , 0},
+  {2 , 8 , 18 , 32 , 14, 2 , 0},
+  {2 , 8 , 18 , 32 , 15, 2 , 0},
+  {2 , 8 , 18 , 32 , 17, 1 , 0},
+  {2 , 8 , 18 , 32 , 18, 1 , 0},
+  {2 , 8 , 18 , 32 , 18, 2 , 0},
+  {2 , 8 , 18 , 32 , 18, 3 , 0},
+  {2 , 8 , 18 , 32 , 18, 4 , 0},
+  {2 , 8 , 18 , 32 , 18, 5 , 0},
+  {2 , 8 , 18 , 32 , 18, 6 , 0},
+  {2 , 8 , 18 , 32 , 18, 7 , 0},
+  {2 , 8 , 18 , 32 , 18, 8 , 0},
+  {2 , 8 , 18 , 32 , 18, 8 , 1},
+  {2 , 8 , 18 , 32 , 18, 8 , 2},
+  {2 , 8 , 18 , 32 , 18, 9 , 2},
+  {2 , 8 , 18 , 32 , 18, 10, 2},
+  {2 , 8 , 18 , 32 , 20, 9 , 2},
+  {2 , 8 , 18 , 32 , 21, 9 , 2},
+  {2 , 8 , 18 , 32 , 22, 9 , 2},
+  {2 , 8 , 18 , 32 , 24, 8 , 2},
+  {2 , 8 , 18 , 32 , 25, 8 , 2},
+  {2 , 8 , 18 , 32 , 25, 9 , 2},
+  {2 , 8 , 18 , 32 , 27, 8 , 2},
+  {2 , 8 , 18 , 32 , 28, 8 , 2},
+  {2 , 8 , 18 , 32 , 29, 8 , 2},
+  {2 , 8 , 18 , 32 , 30, 8 , 2},
+  {2 , 8 , 18 , 32 , 31, 8 , 2},
+  {2 , 8 , 18 , 32 , 32, 8 , 2},
+  {2 , 8 , 18 , 32 , 32, 9 , 2},
+  {2 , 8 , 18 , 32 , 32, 10, 2},
+  {2 , 8 , 18 , 32 , 32, 11, 2},
+  {0, 0, 0, 0, 0, 0, 0,},
+  {0, 0, 0, 0, 0, 0, 0,},
+  {0, 0, 0, 0, 0, 0, 0,}
+};
+//元素名称
+const byte EN[354] PROGMEM = {72, 32, 32, 72, 101, 32, 76, 105, 32, 66, 101, 32, 66, 32, 32, 67, 32, 32, 78, 32, 32, 79, 32, 32, 70, 32, 32, 78, 101, 32, 78, 97, 32, 77, 103, 32, 65, 108, 32, 83, 105, 32, 80, 32, 32, 83, 32, 32, 67, 108, 32, 65, 114, 32, 75, 32, 32, 67, 97, 32, 83, 99, 32, 84, 105, 32, 86, 32, 32, 67, 114, 32, 77, 110, 32, 70, 101, 32, 67, 111, 32, 78, 105, 32, 67, 117, 32, 90, 110, 32, 71, 97, 32, 71, 101, 32, 65, 115, 32, 83, 101, 32, 66, 114, 32, 75, 114, 32, 82, 98, 32, 83, 114, 32, 89, 32, 32, 90, 114, 32, 78, 98, 32, 77, 111, 32, 84, 99, 42, 82, 117, 32, 82, 104, 32, 80, 100, 32, 65, 103, 32, 67, 100, 32, 73, 110, 32, 83, 110, 32, 83, 98, 32, 84, 101, 32, 73, 32, 32, 88, 101, 32, 67, 115, 32, 66, 97, 32, 76, 97, 32, 67, 101, 32, 80, 114, 32, 78, 100, 32, 80, 109, 32, 83, 109, 32, 69, 117, 32, 71, 100, 32, 84, 98, 32, 68, 121, 32, 72, 111, 32, 69, 114, 32, 84, 109, 32, 89, 98, 32, 76, 117, 32, 72, 102, 32, 84, 97, 32, 87, 32, 32, 82, 101, 32, 79, 115, 32, 73, 114, 32, 80, 116, 32, 65, 117, 32, 72, 103, 32, 84, 105, 32, 80, 98, 32, 66, 105, 32, 80, 111, 42, 65, 116, 42, 82, 110, 42, 70, 114, 42, 82, 97, 42, 65, 99, 42, 84, 104, 42, 80, 97, 42, 85, 32, 42, 78, 112, 42, 80, 117, 42, 65, 109, 42, 67, 109, 42, 66, 107, 42, 67, 102, 42, 69, 115, 42, 70, 109, 42, 77, 100, 42, 78, 111, 42, 76, 114, 42, 82, 102, 42, 68, 98, 42, 83, 103, 42, 66, 104, 42, 72, 115, 42, 77, 116, 42, 68, 115, 42, 82, 103, 42, 67, 110, 42, 78, 104, 42, 70, 108, 42, 77, 101, 42, 76, 118, 42, 84, 115, 42, 79, 103, 42,};
+/*====================================================================
+                             软重启函数
+  ====================================================================*/
+void(* resetFunc) (void) = 0; //制造重启命令
+/*=========================================================
+                     只循环一次
+  =========================================================*/
+void setup() {
+  //初始化按钮
+  pinMode (BzPin, OUTPUT);  //音频接口
+  pinMode(UP, INPUT);//定义方向UP引脚状态
+  pinMode(DOWN, INPUT);//定义方向DOWN引脚状态
+  pinMode(LEFT, INPUT);//定义方向LEFT引脚状态
+  pinMode(RIGHT, INPUT);//定义方向RIGHT引脚状态
+  pinMode(A, INPUT);//定义按键A引脚状态
+  pinMode(B, INPUT);//定义按键B引脚状态
+  /*=========================================================
+                       启动菜单
+    =========================================================*/
+  while (!digitalRead(A)) {
+    if (digitalRead(LEFT) == HIGH) {
+      BootLoadChoose = 0;
+    } else {
+      if (digitalRead(RIGHT) == HIGH) {
+        BootLoadChoose = 1;
+      }
+    }
+    u8g.firstPage();
+    do {
+      u8g.setFont(u8g_font_5x7);
+      u8g.setPrintPos(40, 11);
+      u8g.println("BootLoader");
+      u8g.drawBitmapP(16, 16, 4, 32, BootA);
+      u8g.drawBitmapP(80, 16, 4, 32, BootB);
+      if (BootLoadChoose == 0) {
+        u8g.drawBox(16, 16, 32, 32); //白色背景
+        u8g.setColorIndex(0);
+        u8g.drawBitmapP(16, 16, 4, 32, BootA);
+        u8g.setColorIndex(1);
+        u8g.drawFrame(16, 16, 32, 32);
+        u8g.drawFrame(17, 17, 31, 31);
+      } else {
+        u8g.drawBox(80, 16, 32, 32); //白色背景
+        u8g.setColorIndex(0);
+        u8g.drawBitmapP(80, 16, 4, 32, BootB);
+        u8g.setColorIndex(1);
+        u8g.drawFrame(80, 16, 32, 32);
+        u8g.drawFrame(81, 17, 31, 31);
+      }
+    } while ( u8g.nextPage() );
+  }
+  if (BootLoadChoose == 0) {
+    //启动动画
+    for (int i = 63; i >= 46; i--) {
+      u8g.firstPage();
+      do {
+        u8g.drawBitmapP(26, i, 9, 8, HWT);
+        if (i == 46) u8g.drawBitmapP(15, 9, 13, 17, title);
+      } while ( u8g.nextPage() );
+    }
+  } else {
+    u8g.firstPage();
+    do {
+      u8g.drawBitmapP( 0, 0, 16, 64, L);
+    } while ( u8g.nextPage() );
+    //初始化示波器基准值
+    ADMUX = 0x60;
+    ADCSRA = 0xe2;
+  }
+  delay(1000);
+}
+/*=========================================================
+                     不停循环
+  =========================================================*/
+void loop() {
+  if (BootLoadChoose == 1) {
+    sample( );
+    Measure( );
+    Transform( );
+    refresh = true;
+  }
+  Key_scan();  //扫描按键
+  /*=========================================================
+                    显示
+    =========================================================*/
+  if (refresh == true) {
+    u8g.firstPage();
+    do {
+      if (BootLoadChoose == 0) {
+        DrawTable();  //表格
+        Draw_bat();   //电池信息
+      }
+      refresh = false;
+
+      if (BootLoadChoose == 1) draw_Sq();
+    } while ( u8g.nextPage() );
+  }
+}
+void sample( )
+{ for (Fi = 0; Fi < 192; Fi++)
+  {
+    Buffer[Fi] = ADCH;
+    switch (Key)
+    {
+      case 1:
+        break;
+      case 2:
+        delayMicroseconds(4);
+        break;
+      case 3:
+        delayMicroseconds(10);
+        break;
+      case 4:
+        delayMicroseconds(23);
+        break;
+      case 5:
+        delayMicroseconds(60);
+        break;
+      case 6:
+        delayMicroseconds(123);
+        break;
+      case 7:
+        delayMicroseconds(248);
+        break;
+      case 8:
+        delayMicroseconds(623);
+        break;
+      case 9:
+        delayMicroseconds(1247);
+        break;
+      default: break;
+    }
+  }
+}
+void Measure()
+{
+  V_max = Buffer[0];
+  V_min = Buffer[0];
+  for (Fi = 0; Fi < 192; Fi++)
+  {
+    if (Buffer[Fi] > V_max)
+      V_max = Buffer[Fi];
+    if (Buffer[Fi] < V_min)
+      V_min = Buffer[Fi];
+  }
+  V_mid = (V_max + V_min) / 2;
+  Vpp = (V_max - V_min) * 5 / 255;
+  for (Fi = 0; Fi < 97; Fi++)
+  {
+    if (Buffer[Fi] < V_mid && Buffer[Fi + 1] >= V_mid)
+    {
+      i1 = Fi;
+      break;
+    }
+  }
+  for (Fi = i1 + 1; Fi < 98 + i1; Fi++)
+  {
+    if (Buffer[Fi] < V_mid && Buffer[Fi + 1] >= V_mid)
+    {
+      i2 = Fi;
+      break;
+    }
+  }
+  t = i2 - i1;
+  if (t > 0)
+    Freq = 8000 / t;
+  else
+    Freq = 0;
+}
+void Transform( )
+{
+  for (sta = 0; sta < 96; sta++)
+  {
+    if (Buffer[sta] < 128 && Buffer[sta + 2] > 128)
+      break;
+  }
+  for (Fi = 0; Fi < 96; Fi++)
+    FY[Fi] =  63 - (Buffer[Fi + sta] >> 2);
+}
+/*=========================================================
+                  渲染示波器界面
+  =========================================================*/
+void draw_Sq( )
+{
+  u8g.setFont(u8g_font_5x7);
+  for (Fx = 0; Fx < 95; Fx++) u8g.drawLine(Fx, FY[Fx], Fx, FY[Fx + 1]); //画线
+  //画边框
+  u8g.drawFrame(0, 0, 97, 64);
+  // 画坐标轴
+  u8g.drawLine(48, 0, 48, 63);
+  u8g.drawLine(0, 32, 96, 32);
+  for (Fx = 0; Fx < 96; Fx += 8)
+    u8g.drawLine(Fx, 31, Fx, 33);
+  for (Fy = 0; Fy < 64; Fy += 8)
+    u8g.drawLine(47, Fy, 49, Fy);
+  //画网格
+  for (Fx = 8; Fx < 96; Fx += 8)
+  {
+    for (Fy = 8; Fy < 64; Fy += 8)
+      u8g.drawPixel(Fx, Fy);
+  }
+  //显示参数
+  u8g.drawStr(98, 7, "MS/div");
+  u8g.drawStr(98, 23, "V/div");
+  u8g.drawStr(98, 30, "0.324");
+  u8g.drawStr(98, 40, "Vpp");
+  u8g.setPrintPos( 98, 47);
+  u8g.print(Vpp);
+  u8g.drawStr(118, 47, "V");
+  u8g.drawStr(98, 55, "F(HZ)");
+  switch (Key)
+  {
+    case  1:
+      u8g.drawStr(98, 14, "0.02");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq * 50);
+      break;
+    case  2:
+      u8g.drawStr(98, 14, "0.05");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq * 20);
+      break;
+    case  3:
+      u8g.drawStr(98, 14, " 0.1");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq * 10);
+      break;
+    case  4:
+      u8g.drawStr(98, 14, " 0.2");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq * 5);
+      break;
+    case  5:
+      u8g.drawStr(98, 14, " 0.5");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq * 2);
+      break;
+    case  6:
+      u8g.drawStr(98, 14, "  1");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq);
+      break;
+    case  7:
+      u8g.drawStr(98, 14, "  2");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq / 2);
+      break;
+    case  8:
+      u8g.drawStr(98, 14, "  5");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq / 5);
+      break;
+    case  9:
+      u8g.drawStr(98, 14, " 10");
+      u8g.setPrintPos( 98, 62);
+      u8g.print(Freq / 10);
+      break;
+    default: break;
+  }
+}
+/*=========================================================
+                  渲染表格
+  =========================================================*/
+void DrawTable() {
+  Nx = EX - 3;
+  Ny = EY - 1;
+  for (int y = 1; y <= 3; y++) {
+    for (int x = 1; x <= 7; x++) {
+      if (x == 4 && y == 2) {
+        //处于选择位置 反色处理开始
+        u8g.setColorIndex(1);
+        u8g.drawBox(x * 16 - 1, y * 16 - 1, 17, 17); //白色背景
+        u8g.setColorIndex(0);
+      }
+      if (Nx >= 0 && Ny >= 0 && Nx <= 17 && Ny <= 9) {
+        u8g.setFont(u8g_font_u8glib_4);   //切换u8g_font_u8glib_4字体
+        if (pgm_read_byte_near(&AM[Ny][Nx]) != 0) { //如果当前位置存在元素
+          if (x == 4 && y == 2) {} else {
+            u8g.drawFrame(x * 16 - 1, y * 16 - 1, 17, 17);  //画格子
+          }
+          u8g.setPrintPos(x * 16 + 1, y * 16 + 6);  //在坐标开始画
+          u8g.print(pgm_read_byte_near(&AM[Ny][Nx]));   //原子序号
+          //元素名称
+          u8g.setPrintPos(x * 16 + 1, y * 16 + 6 + 8); //在坐标开始画 第1个字符
+          u8g.print((char)pgm_read_byte_near(&EN[(3 * pgm_read_byte_near(&AM[Ny][Nx])) - 3])); //元素名称
+          u8g.setPrintPos(x * 16 + 1 + 5, y * 16 + 6 + 8); //在坐标开始画 第2个字符
+          u8g.print((char)pgm_read_byte_near(&EN[(3 * pgm_read_byte_near(&AM[Ny][Nx])) - 2])); //元素名称
+          u8g.setPrintPos(x * 16 + 1 + 5 + 5, y * 16 + 6 + 8); //在坐标开始画 第3个字符
+          u8g.print((char)pgm_read_byte_near(&EN[(3 * pgm_read_byte_near(&AM[Ny][Nx])) - 1])); //元素名称
+        } else {
+          //判断是否为镧系和锕系
+          if (Nx == 2 && Ny == 5) {
+            if (x == 4 && y == 2) {} else {
+              u8g.drawFrame(x * 16 - 1, y * 16 - 1, 17, 17);  //画格子
+            }
+            u8g.setPrintPos(x * 16 + 1, y * 16 + 10);  //在坐标开始画
+            u8g.print("La X");
+          } else {
+            if (Nx == 2 && Ny == 6) {
+              if (x == 4 && y == 2) {} else {
+                u8g.drawFrame(x * 16 - 1, y * 16 - 1, 17, 17);  //画格子
+              }
+              u8g.setPrintPos(x * 16 + 1, y * 16 + 10);  //在坐标开始画
+              u8g.print("Ac X");
+            } else {
+              //画背景
+              u8g.drawLine(x * 16 + 3, y * 16 + 3, x * 16 + 12, y * 16 + 12);
+              u8g.drawLine(x * 16 + 12, y * 16 + 3, x * 16 + 3, y * 16 + 12);
+            }
+          }
+        }
+        if (x == 4 && y == 2) {
+          //处于选择位置 反色处理结束
+          u8g.setColorIndex(1);
+        }
+      }
+      Nx++;
+    }
+    //画周期
+    if (Ny + 1 <= 7 && Ny + 1 > 0) {
+      u8g.setFont(u8g_font_courB08);   //切换u8g_font_courB08字体
+      u8g.setPrintPos(3, y * 16 + 11); //在坐标开始画
+      u8g.print(Ny + 1);
+    }
+    Nx = EX - 3;
+    Ny++;
+  }
+  if (EY <= 7) { //在镧系和锕系关闭族的显示
+    //画族
+    u8g.setFont(u8g_font_u8glib_4);   //切换u8g_font_u8glib_4字体
+    u8g.setPrintPos(69 - EX * 16, 6); //在坐标开始画
+    u8g.print(F("IA    IIA   IIIB  IVB   VB  VIB VIIB  VIII  VIII  VIII    IB    IIB   IIIA   IVA  VA"));
+    if (EX >= 12) {
+      //清除渲染错误区域
+      u8g.setColorIndex(0);
+      u8g.drawBox(64 - EX * 16, 0, 112, 14); //清空重绘区
+      u8g.setColorIndex(1);
+      //绘后半部分
+      u8g.setPrintPos(48 - EX * 16, 6); //在坐标开始画
+      u8g.print(F(" VIA  VIIA   0 "));
+    }
+    if (EX <= 3) {
+      //清除渲染错误区域
+      u8g.setColorIndex(0);
+      u8g.drawBox(0, 0, 48 - EX * 16, 14); //清空重绘区
+      u8g.setColorIndex(1);
+    }
+  }
+}
+/*=========================================================
+                  详细资料
+  =========================================================*/
+void show() {
+  byte p = 1;
+  while (digitalRead(B) == LOW)
+  {
+    if (digitalRead(A) == HIGH) {
+      if (pgm_read_byte_near(&AM[EY][EX]) == 7 && NIKO == 0) {
+        NIKO++;
+      } else {
+        if (pgm_read_byte_near(&AM[EY][EX]) == 53 && NIKO == 1) {
+          NIKO++;
+        } else {
+          if (pgm_read_byte_near(&AM[EY][EX]) == 19 && NIKO == 2) {
+            NIKO++;
+          } else {
+            if (pgm_read_byte_near(&AM[EY][EX]) == 8 && NIKO == 3) {
+              Oneshot();
+            } else {
+              NIKO = 0;
+            }
+          }
+        }
+      }
+    }
+    if (digitalRead(LEFT) == HIGH) {
+      if (p > 1) {
+        p--;
+        refresh = true;
+      }
+    }
+    if (digitalRead(RIGHT) == HIGH) {
+      if (p < 3) {
+        p++;
+        refresh = true;
+      }
+    }
+    if (refresh == true) {
+      TEIRN = 0;
+      refresh = false;
+      u8g.firstPage();
+      do {
+        if (p == 1) {
+          //资料页
+          u8g.setFont(u8g_font_10x20);
+          u8g.setPrintPos(60, 14);
+          u8g.print((char)pgm_read_byte_near(&EN[(3 * pgm_read_byte_near(&AM[EY][EX])) - 3])); //元素名称
+          u8g.setPrintPos(74, 14);
+          u8g.print((char)pgm_read_byte_near(&EN[(3 * pgm_read_byte_near(&AM[EY][EX])) - 2])); //元素名称
+          u8g.setPrintPos(92, 14);
+          //是否放射性
+          if (pgm_read_byte_near(&EN[(3 * pgm_read_byte_near(&AM[EY][EX])) - 1]) == 42) u8g.drawBitmapP(112, 19, 2, 16, radiation); //放射性图标
+          //是否金属
+          metal = true;
+          for (int i = 0; i <= 23; i++) {
+            if (pgm_read_byte_near(&non[i]) == pgm_read_byte_near(&AM[EY][EX])) {
+              metal = false;
+            }
+          }
+          if (metal == true) u8g.drawBitmapP(112, 36, 2, 16, Bmrtal); //金属图标
+          u8g.print(pgm_read_byte_near(&AM[EY][EX]));   //原子序数
+          u8g.setFont(u8g_font_tpssb);
+          u8g.drawBitmapP(2, 1, 7, 11, Element);
+          u8g.drawBitmapP(2, 21, 7, 11, Relative);
+          u8g.drawBitmapP(1, 40, 7, 12, RM);
+          u8g.setPrintPos(61, 30);
+          if (pgm_read_byte_near(&AM[EY][EX]) < 108) {
+            u8g.print(float(pgm_read_byte_near(&Radius[pgm_read_byte_near(&AM[EY][EX]) - 1])) / 100); //半径
+          } else {
+            u8g.print("?.???");
+          }
+          u8g.setPrintPos(61, 52);
+          if (pgm_read_byte_near(&AM[EY][EX]) <= 4) {
+            u8g.print(pgm_read_byte_near(&mass[2 * pgm_read_byte_near(&AM[EY][EX]) - 2]) / float(10) + pgm_read_byte_near(&mass[2 * pgm_read_byte_near(&AM[EY][EX]) - 1]) / float(1000), 3); //相对质量
+          } else {
+            if (pgm_read_byte_near(&AM[EY][EX]) <= 43) {
+              u8g.print(pgm_read_byte_near(&mass[2 * pgm_read_byte_near(&AM[EY][EX]) - 2]) + pgm_read_byte_near(&mass[2 * pgm_read_byte_near(&AM[EY][EX]) - 1]) / float(100), 2); //相对质量
+            } else {
+              u8g.print(pgm_read_byte_near(&mass[2 * pgm_read_byte_near(&AM[EY][EX]) - 2]) * 10 + pgm_read_byte_near(&mass[2 * pgm_read_byte_near(&AM[EY][EX]) - 1]) / float(10), 1); //相对质量
+            }
+          }
+          u8g.drawLine(0, 35, 128, 35);
+          u8g.drawLine(0, 17, 128, 17);
+        } else {
+          if (p == 2) {
+            //结构页
+            //计算原子层数
+            if (EY <= 7) {
+              ZQ = EY;
+            } else {
+              if (EY == 8) {
+                ZQ = 5;
+              } else {
+                if (EY == 9) {
+                  ZQ = 6;
+                }
+              }
+            }
+            //46号不规则
+            if (pgm_read_byte_near(&AM[EY][EX]) == 46) ZQ = 3;
+            u8g.setFont(u8g_font_tpssb);
+            u8g.drawDisc(11, 30, 16);  //画实心圆
+            for (int i = 1; i <= ZQ + 1; i++) {
+              u8g.drawCircle(11, 30, 12 + i * 15);   //渲染运行轨道
+            }
+            u8g.setColorIndex(0);
+            //原子序数
+            u8g.setPrintPos(-2, 35);
+            u8g.print("+");
+            u8g.setPrintPos(6, 35);
+            u8g.print(pgm_read_byte_near(&AM[EY][EX]));
+            u8g.drawBox(29, 26, 95, 13); //清理轨道
+            u8g.setColorIndex(1);
+            //标上电子数
+            u8g.setFont(u8g_font_blipfest_07);
+            for (int i = 0; i <= ZQ; i++) {
+              u8g.setPrintPos(39 + i * 14, 34);
+              if (pgm_read_byte_near(&AM[EY][EX]) < 105) {
+                u8g.print(pgm_read_byte_near(&AC[pgm_read_byte_near(&AM[EY][EX]) - 1][i]));
+              } else {
+                u8g.print("?");
+              }
+            }
+          } else {
+            if (p == 3) {
+              u8g.setFont(u8g_font_10x20);
+              u8g.drawBitmapP(22, 1, 11, 12, VA);
+              u8g.drawBox(0, 16, 128, 1);
+              u8g.drawBox(64, 16, 1, 128);
+              u8g.setPrintPos(16, 34);
+              u8g.print("Max");
+              u8g.setPrintPos(85, 34);
+              u8g.print("Min");
+              u8g.setPrintPos(27, 51);
+              u8g.print(pgm_read_byte_near(&AC[pgm_read_byte_near(&AM[EY][EX]) - 1][ZQ]));   //打印最外层电子
+              u8g.setPrintPos(95, 51);
+              if (metal == true) {
+                //金属没有负假
+                u8g.print("0");
+              } else {
+                if (pgm_read_byte_near(&AC[pgm_read_byte_near(&AM[EY][EX]) - 1][ZQ]) >= 4 && (pgm_read_byte_near(&AC[pgm_read_byte_near(&AM[EY][EX]) - 1][ZQ]) != 8)) {
+                  u8g.print(8 - pgm_read_byte_near(&AC[pgm_read_byte_near(&AM[EY][EX]) - 1][ZQ]));
+                  u8g.setPrintPos(80, 51);
+                  u8g.print("-");
+                } else {
+                  u8g.print("0");
+                }
+              }
+            }
+          }
+        }
+      } while ( u8g.nextPage() );
+    }
+  }
+  refresh = true;  //返回后进行画面刷新
+}
+/*=========================================================
+                     电池电压
+  =========================================================*/
+long readVcc() {
+  long result;
+  // Read 1.1V reference against AVcc
+  ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
+  delay(2); // Wait for Vref to settle
+  ADCSRA |= _BV(ADSC); // Convert
+  while (bit_is_set(ADCSRA, ADSC));
+  result = ADCL;
+  result |= ADCH << 8;
+  result = 1126400L / result; // Back-calculate AVcc in mV
+  return result;
+}
+void Draw_bat() {
+  u8g.setColorIndex(0);
+  u8g.drawBox(0, 0, 14, 14); //背景
+  u8g.setColorIndex(1);
+  float vcc_vol = readVcc() / 1000;            //将读取的vcc电压mv转换为v
+  if (vcc_vol >= 4.5 ) {
+    u8g.drawBitmapP(1, 1, 1, 8, rook_bitmap5);
+  }
+  if (vcc_vol < 4.5 && vcc_vol >= 4 ) {
+    u8g.drawBitmapP(1, 1, 1, 8, rook_bitmap4);
+  }
+  if (vcc_vol < 4 && vcc_vol >= 3.5 ) {
+    u8g.drawBitmapP(1, 1, 1, 8, rook_bitmap3);
+  }
+  if (vcc_vol < 3.5 && vcc_vol >= 3 ) {
+    u8g.drawBitmapP(1, 1, 1, 8, rook_bitmap2);
+  }
+  if (vcc_vol < 3 ) {                //当VCC电压小于3v时图标闪烁，电池电量不足警告
+    switch (flash) {
+      case 0:
+        u8g.drawBitmapP(1, 1, 1, 8, rook_bitmap1);
+        flash = 1;
+        break;
+      case 1:
+        u8g.drawBitmapP(1, 1, 1, 8, rook_bitmap0);
+        flash = 0;
+        break;
+    }
+  }
+}
+/*=========================================================
+                    按键输入
+    =========================================================*/
+void Key_scan()
+{
+  if (digitalRead(UP) == HIGH) {
+    if (BootLoadChoose == 0) {
+      if (EY > 0) {
+        EY--;
+        refresh = true;
+      }
+    } else {
+      if (BootLoadChoose == 1) {
+        Key++;
+        if (Key == 10)
+          Key = 9;
+        delay(10);
+      }
+    }
+  }
+  if (digitalRead(DOWN) == HIGH) {
+    if (BootLoadChoose == 0) {
+      if (EY < 9) {
+        EY++;
+        refresh = true;
+      }
+    } else {
+      if (BootLoadChoose == 1) {
+        Key--;
+        if (Key == 0)
+          Key = 1;
+        delay(10);
+      }
+    }
+  }
+  if (digitalRead(LEFT) == HIGH) {
+    if (BootLoadChoose == 0) {
+      if (EX > 0) {
+        EX--;
+        refresh = true;
+      }
+    }
+  }
+  if (digitalRead(RIGHT) == HIGH) {
+    if (BootLoadChoose == 0) {
+      if (EX < 17) {
+        EX++;
+        refresh = true;
+      }
+    }
+  }
+
+  if (digitalRead(A) == HIGH) {
+    if (BootLoadChoose == 0) {
+      if (pgm_read_byte_near(&AM[EY][EX]) != 0) {
+        refresh = true;
+        show();
+      } else {
+        if (EX == 2 && EY == 5) {
+          EX = 1;
+          EY = 8;
+          refresh = true;
+        }
+        if (EX == 2 && EY == 6) {
+          EX = 1;
+          EY = 9;
+          refresh = true;
+        }
+        delay(200); //防止按键短时间触发两遍
+      }
+    } else {
+      if (BootLoadChoose == 1) {
+        hold = ~hold;
+        delay(10);
+      }
+    }
+  }
+}
+/*=========================================================
+                       NIKO
+  ========================================================= */
+void Oneshot() {
+while (1) {
+  u8g.firstPage();
+  do {
+    //NIKO Not a cat !
+    u8g.setColorIndex(1);
+    u8g.drawBox(0, 0, 128, 64);
+    u8g.setColorIndex(0);
+    u8g.setFont(u8g_font_10x20);
+    u8g.setPrintPos(27, 24);
+    u8g.print("neShot");
+    u8g.setFont(u8g_font_tpssb);
+    u8g.setPrintPos(3, 49);
+    u8g.print("NIKO not a cat!");
+    u8g.drawBitmapP(1, 1, 4, 25, lightbulb);
+    if (digitalRead(A)==LOW) {
+      u8g.drawBitmapP(88, 6, 5, 53, NIKO_1);
+    } else {
+      u8g.drawBitmapP(88, 6, 5, 53, NIKO_2);
+    }
+  } while ( u8g.nextPage() );
+  }
+}
+/*=========================================================
+                     小彩蛋 东方红
+  =========================================================
+  void TEIR() {
+  //1
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p / 2);
+  tone(BzPin, M6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //2
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //3
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //4
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //5
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //6
+  tone(BzPin, M6);
+  delay(p / 2);
+  tone(BzPin, H1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M6);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //7
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //8
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //9
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //10
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //11
+  tone(BzPin, L5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //12
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //13
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //14
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //15
+  tone(BzPin, M2);
+  delay(p / 2);
+  tone(BzPin, M1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //16-17
+  tone(BzPin, L5);
+  delay(p + l + p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //17
+  noTone(BzPin);
+  delay(p);
+  //1
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p / 2);
+  tone(BzPin, M6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //2
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //3
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //4
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //5
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //6
+  tone(BzPin, M6);
+  delay(p / 2);
+  tone(BzPin, H1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M6);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //7
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //8
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //9
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //10
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //11
+  tone(BzPin, L5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //12
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //13
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //14
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //15
+  tone(BzPin, M2);
+  delay(p / 2);
+  tone(BzPin, M1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //16-17
+  tone(BzPin, L5);
+  delay(p + l + p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //17
+  noTone(BzPin);
+  delay(p);
+  //1
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p / 2);
+  tone(BzPin, M6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //2
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //3
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //4
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //5
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //6
+  tone(BzPin, M6);
+  delay(p / 2);
+  tone(BzPin, H1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M6);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //7
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //8
+  tone(BzPin, M2);
+  delay(p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //9
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //10
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //11
+  tone(BzPin, L5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //12
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //13
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //14
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //15
+  tone(BzPin, M2);
+  delay(p / 2);
+  tone(BzPin, M1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //16-17
+  tone(BzPin, L5);
+  delay(p + l + p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //17
+  noTone(BzPin);
+  delay(p);
+  //9
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //10
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, L7);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //11
+  tone(BzPin, L5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M5);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  //12
+  tone(BzPin, M2);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //13
+  tone(BzPin, M1);
+  delay(p);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2);
+  tone(BzPin, L6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //14
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M3);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M2);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M1);
+  delay(p / 2 - l);
+  noTone(BzPin);
+  delay(l);
+  //15
+  tone(BzPin, H2);
+  delay(p / 2);
+  tone(BzPin, H1);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  tone(BzPin, M7);
+  delay(p / 2);
+  tone(BzPin, M6);
+  delay(p / 2);
+  noTone(BzPin);
+  delay(l);
+  //16-17
+  tone(BzPin, M5);
+  delay(p + l + p + l + p);
+  noTone(BzPin);
+  delay(l);
+  //17
+  noTone(BzPin);
+  resetFunc();    //重启程序开始
+  }*/
+
